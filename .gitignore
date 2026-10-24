@@ -1,0 +1,27 @@
+# STM32CubeIDE for VS Code
+build
+mx.scratch
+!.settings
+
+# Compiled firmware and build artifacts
+*.elf
+*.hex
+*.bin
+*.srec
+*.map
+*.lst
+*.o
+*.obj
+*.d
+*.a
+*.su
+
+# Logs and temporary files
+*.log
+*.bak
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
