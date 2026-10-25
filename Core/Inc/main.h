@@ -59,10 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define SPI1_SCK_Pin GPIO_PIN_5
 #define SPI1_SCK_GPIO_Port GPIOA
-#define SPI1_CS_SHARP_Pin GPIO_PIN_6
-#define SPI1_CS_SHARP_GPIO_Port GPIOA
-#define SPI_MOSI_Pin GPIO_PIN_7
-#define SPI_MOSI_GPIO_Port GPIOA
+#define SPI_CS_DISPLAY_Pin GPIO_PIN_6
+#define SPI_CS_DISPLAY_GPIO_Port GPIOA
+#define SPI1_MOSI_Pin GPIO_PIN_7
+#define SPI1_MOSI_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

@@ -18,6 +18,8 @@
 #define SCREEN_HEIGHT_IN_PIXELS 	176
 #define SCREEN_WIDTH_IN_BYTES       3 * (SCREEN_WIDTH_IN_PIXELS / 8)
 
+#define BITS_PER_PIXEL 3u   // 3 bits per pixel for 8 colors
+
 /**
  *  Color definitions for JDI 8-color MIP display
 */
@@ -30,8 +32,6 @@
 #define JDI_8COL_CYAN    0x0A		//1 0 1
 #define JDI_8COL_MAGENTA 0x0C		//1 1 0
 #define JDI_8COL_WHITE   0x0E		//1 1 1
-
-#define BITS_PER_PIXEL 3u   // 3 bits per pixel for 8 colors
 
 
 #ifdef __cplusplus
