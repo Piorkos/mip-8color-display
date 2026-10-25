@@ -46,7 +46,6 @@ typedef struct
     uint16_t cs_pin;
 }MIP_8c_Display_Config_t;
 
-
 /**
  * @brief Initializes the MIP 8-color display driver.
  *

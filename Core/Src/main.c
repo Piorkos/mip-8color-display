@@ -170,7 +170,7 @@ int main(void)
   {
     MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_CYAN);
   }
-  MIP_8c_Display_RefreshScreen(85, 125);
+  MIP_8c_Display_RefreshScreen(85, 95);
   HAL_Delay(1000);
 
   // Draw MAGENTA
@@ -178,7 +178,7 @@ int main(void)
   {
     MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
   }
-  MIP_8c_Display_RefreshScreen(130, 140);
+  MIP_8c_Display_RefreshScreen(130, 170);
   HAL_Delay(1000);
 
 
