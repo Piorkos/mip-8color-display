@@ -11,6 +11,7 @@
 // // include STM32 HAL and STM32 HAL SPI header files
 #include "stm32wbxx_hal.h"
 #include "stm32wbxx_hal_spi.h"
+#include <stdint.h>
 
 // Display resolution
 #define SCREEN_WIDTH_IN_PIXELS  	176
@@ -32,26 +33,26 @@
 
 #define BITS_PER_PIXEL 3u   // 3 bits per pixel for 8 colors
 
-#define SPI1_SCK_Pin GPIO_PIN_5
-#define SPI1_SCK_GPIO_Port GPIOA
-#define SPI1_CS_SHARP_Pin GPIO_PIN_6
-#define SPI1_CS_SHARP_GPIO_Port GPIOA
-#define SPI_MOSI_Pin GPIO_PIN_7
-#define SPI_MOSI_GPIO_Port GPIOA
-// #define LED2_Pin GPIO_PIN_0
-// #define LED2_GPIO_Port GPIOB
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/** SPI and GPIO configuration */
+typedef struct
+{
+    SPI_HandleTypeDef *hspi;
+    GPIO_TypeDef *cs_port;
+    uint16_t cs_pin;
+}MIP_8c_Display_Config_t;
+
+
 /**
-    * @brief Initializes the MIP-8color display driver with the specified width, height, and SPI handle.
-    *
-    * @param hspi Pointer to the SPI handle used for communication with the display.
-    */
-void MIP_8c_Display_Init(SPI_HandleTypeDef *hspi);
+ * @brief Initializes the MIP 8-color display driver.
+ *
+ * @param config Pointer to the display hardware configuration.
+ */
+void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config);
 
 /**
     * @brief Draws a horizontal line. This method operates on full bytes, not on pixels also requires to redraw only 1 line of the screen, 
@@ -79,10 +80,6 @@ void MIP_8c_Display_DrawHorizontalLineColor(uint16_t x, uint8_t color);
 void MIP_8c_Display_RefreshScreen(uint8_t line_start, uint8_t line_end);
 
 void MIP_8c_Display_ClearScreen();
-
-void MIP_8c_Display_MX_SPI1_Init(void);
-
-void MIP_8c_Display_Error_Handler(void);
 
 
 // @TODO So far the driver is designed to work with Display which is using EXTCOMIN pin to switch VCOM. 

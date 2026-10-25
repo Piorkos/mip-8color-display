@@ -98,7 +98,14 @@ int main(void)
 
   HAL_Delay(1000);
 
-  MIP_8c_Display_Init(&hspi1);
+
+  MIP_8c_Display_Config_t display_config = 
+  {
+    .hspi = &hspi1,
+    .cs_port = SPI1_CS_SHARP_GPIO_Port,
+    .cs_pin = SPI1_CS_SHARP_Pin
+  };
+  MIP_8c_Display_Init(&display_config);
   HAL_Delay(100);
   
 
@@ -172,7 +179,7 @@ int main(void)
   {
     MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
   }
-  MIP_8c_Display_RefreshScreen(100, 130);
+  MIP_8c_Display_RefreshScreen(100, 110);
   HAL_Delay(1000);
 
 

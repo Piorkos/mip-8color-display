@@ -13,14 +13,13 @@
 //  Three packed bits per pixel; round up in case the display size is not byte-aligned
 static uint8_t screen_buffer[(SCREEN_WIDTH_IN_PIXELS * SCREEN_HEIGHT_IN_PIXELS * BITS_PER_PIXEL + 7u) / 8u];
 
-static SPI_HandleTypeDef *mip_8c_display_hspi = NULL;
+static MIP_8c_Display_Config_t display_config;
 static bool vcom_bool_ = false;
 
-
-void MIP_8c_Display_Init(SPI_HandleTypeDef *hspi)
+void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config)
 {
-    mip_8c_display_hspi = hspi;
-	HAL_GPIO_WritePin(SPI1_CS_SHARP_GPIO_Port, SPI1_CS_SHARP_Pin, GPIO_PIN_RESET);	// this display is low on inactive
+    display_config = *config;
+	HAL_GPIO_WritePin(display_config.cs_port, display_config.cs_pin, GPIO_PIN_RESET);	// this display is low on inactive
 
     // Initialize buffer with white pixels
     for(int i = 0; i < sizeof(screen_buffer); ++i)
@@ -104,14 +103,14 @@ void MIP_8c_Display_RefreshScreen(uint8_t line_start, uint8_t line_end)
     // Workaround: Toggle CS before the first SPI transmission to eliminate an unwanted SCK pulse observed during initial SPI startup.
     // This ensures the display sees a clean CS transition before data transfer.
     // Do not remove until the initial SCK glitch has been properly investigated and resolved.
-    HAL_GPIO_WritePin(SPI1_CS_SHARP_GPIO_Port, SPI1_CS_SHARP_Pin, GPIO_PIN_SET);	// this display is low on inactive
-    HAL_GPIO_WritePin(SPI1_CS_SHARP_GPIO_Port, SPI1_CS_SHARP_Pin, GPIO_PIN_RESET);	// this display is low on inactive
+    HAL_GPIO_WritePin(display_config.cs_port, display_config.cs_pin, GPIO_PIN_SET);	// this display is low on inactive
+    HAL_GPIO_WritePin(display_config.cs_port, display_config.cs_pin, GPIO_PIN_RESET);	// this display is low on inactive
     
-    HAL_GPIO_WritePin(SPI1_CS_SHARP_GPIO_Port, SPI1_CS_SHARP_Pin, GPIO_PIN_SET);	// this display is low on inactive
-    HAL_StatusTypeDef status = HAL_SPI_Transmit(mip_8c_display_hspi, buf, length_of_buffer, HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(display_config.cs_port, display_config.cs_pin, GPIO_PIN_SET);	// this display is low on inactive
+    HAL_StatusTypeDef status = HAL_SPI_Transmit(display_config.hspi, buf, length_of_buffer, HAL_MAX_DELAY);
     if(status != HAL_OK)
     {
         
     }
-    HAL_GPIO_WritePin(SPI1_CS_SHARP_GPIO_Port, SPI1_CS_SHARP_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(display_config.cs_port, display_config.cs_pin, GPIO_PIN_RESET);
 }
