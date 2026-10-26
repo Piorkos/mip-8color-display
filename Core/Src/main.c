@@ -176,10 +176,15 @@ int main(void)
   // Draw MAGENTA
   for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
   {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
+    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_WHITE);
   }
-  MIP_8c_Display_RefreshScreen(130, 170);
+  MIP_8c_Display_RefreshScreen(100, 110);
   HAL_Delay(1000);
+
+  MIP_8c_Display_DrawText(100, JDI_8COL_RED, "HELLO MILOS");
+  MIP_8c_Display_RefreshScreen(100, 127);
+  MIP_8c_Display_DrawText(130, JDI_8COL_GREEN, "HOW YOU DOIN");
+  MIP_8c_Display_RefreshScreen(130, 170);
 
 
   /* USER CODE END 2 */

@@ -71,6 +71,14 @@ void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config);
 void MIP_8c_Display_DrawHorizontalLineColor(uint16_t x, uint8_t color);
 
 /**
+ * @brief Draws a line of text.
+    * @param row The row (in PIXELS) where the text will be drawn.
+    * @param color The color to use for the text.
+    * @param text The null-terminated string of text to draw.
+ */
+void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text);
+
+/**
     * @brief Refreshes the screen by sending the updated screen buffer to the display.
     *
     * @param line_start The starting line (row) to refresh, in PIXELS.

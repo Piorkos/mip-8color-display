@@ -5,9 +5,12 @@
  *      Author: Dominik Piórkowski
  */
 #include <stdbool.h>
+#include <stdint.h>
+#include <sys/_intsup.h>
 
 // #include "main.h"
 #include "MIP-8c/mip-8c-display.h"
+#include "MIP-8c/font.h"
 #include "stm32wbxx_hal_def.h"
 
 
@@ -45,6 +48,94 @@ void MIP_8c_Display_DrawHorizontalLineColor(uint16_t x, uint8_t color)
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i] = (color << 5) | (color << 2) | (color >> 1);
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i + 1] = (color << 7) | (color << 4) | (color << 1) | (color >> 2);
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i + 2] = (color << 6) | (color << 3) | color;
+    }
+}
+
+void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
+{
+    if (text == NULL || row >= SCREEN_HEIGHT_IN_PIXELS)
+    {
+        return;
+    }
+
+    uint32_t x_position = 0;
+    bool previous_was_letter = false;
+    uint8_t pixel_color = color;
+
+    for (size_t text_index = 0; text[text_index] != '\0'; ++text_index)
+    {
+        char character = text[text_index];
+        if (character == ' ')
+        {
+            x_position += SPACE_WIDTH_IN_PIXELS;
+            previous_was_letter = false;
+            continue;
+        }
+
+        if (character < 'A' || character > 'Z')
+        {
+            continue;
+        }
+
+        if (previous_was_letter)
+        {
+            x_position += SPACE_WIDTH_IN_PIXELS;
+        }
+        if (x_position >= SCREEN_WIDTH_IN_PIXELS)
+        {
+            break;
+        }
+
+        uint8_t letter_index = (uint8_t)(character - INDEX_OF_A);
+        uint8_t letter_width = letters_width[letter_index];
+        uint8_t letter_height = letters_height[letter_index];
+
+        for (uint8_t glyph_row = 0; glyph_row < letter_height; ++glyph_row)
+        {
+            uint32_t screen_y = (uint32_t)row + glyph_row;
+            if (screen_y >= SCREEN_HEIGHT_IN_PIXELS)
+            {
+                break;
+            }
+
+            for (uint8_t glyph_column = 0; glyph_column < letter_width; ++glyph_column)
+            {
+                if (x_position + glyph_column >= SCREEN_WIDTH_IN_PIXELS)
+                {
+                    break;
+                }
+
+                if (letters_bin[letter_index][glyph_row][glyph_column] == 0)
+                {
+                    continue;
+                }
+
+                uint32_t pixel_bit_index = x_position * BITS_PER_PIXEL;
+                pixel_bit_index += glyph_column * BITS_PER_PIXEL;
+                uint32_t buffer_index = screen_y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
+                uint8_t bit_offset = (uint8_t)(pixel_bit_index % 8u);
+
+                for (uint8_t bit = 0; bit < BITS_PER_PIXEL; ++bit)
+                {
+                    uint32_t destination_bit = bit_offset + bit;
+                    uint8_t mask = (uint8_t)(1u << (7u - destination_bit % 8u));
+                    uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
+                    uint32_t destination_byte = buffer_index + destination_bit / 8u;
+
+                    if (color_bit != 0)
+                    {
+                        screen_buffer[destination_byte] |= mask;
+                    }
+                    else
+                    {
+                        screen_buffer[destination_byte] &= (uint8_t)~mask;
+                    }
+                }
+            }
+        }
+
+        x_position += letter_width;
+        previous_was_letter = true;
     }
 }
 
