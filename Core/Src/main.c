@@ -124,13 +124,42 @@ int main(void)
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
   HAL_Delay(500);
   
+  // for(int i = 0; i < 10; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_GREEN);
+  // }
+
+  // for(int i = 10; i < 20; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_RED);
+  // }
+
+  // for(int i = 20; i < 30; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_YELLOW);
+  // }
+
+  // for(int i = 30; i < 40; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLUE);
+  // }
   
+  // for(int i = 40; i < 50; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_CYAN);
+  // }
+  
+  // for(int i = 50; i < 60; i++)
+  // {
+  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
+  // }
+
 
   MIP_8c_Display_DrawText(3, JDI_8COL_GREEN, "!\"#$%&'()*+,-.");
   MIP_8c_Display_DrawText(30, JDI_8COL_RED, "/0123456789:;");
   MIP_8c_Display_DrawText(60, JDI_8COL_YELLOW, "<=>?@abcdefg");
-  MIP_8c_Display_DrawText(90, JDI_8COL_BLUE, "hjiklmnopq");
-  MIP_8c_Display_DrawText(120, JDI_8COL_CYAN, "rstuvwxyz");
+  MIP_8c_Display_DrawText(90, JDI_8COL_BLUE, "hj iklmnopq");
+  MIP_8c_Display_DrawText(120, JDI_8COL_CYAN, "czesc! co tam?");
   MIP_8c_Display_DrawText(150, JDI_8COL_MAGENTA, "\\[\]^_`{|}");
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
 

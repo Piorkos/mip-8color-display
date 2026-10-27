@@ -6,8 +6,9 @@
  */
 #include <stdint.h>
 
-#define INDEX_OF_A 33
-#define SPACE_WIDTH_IN_PIXELS 3
+#define INDEX_OF_FIRST_CHAR 33      // ASCII code of the first character in the font array, i.e. if first is '!' then INDEX_OF_FIRST_CHAR = 33 
+#define SPACE_IN_PIXELS 12          // Width of the space character in pixels
+#define CHARACTERS_SEPARATOR_IN_PIXELS 3    // Width of the separator between characters (when there is no space betweern them)
 
 
 const uint8_t letters_width[95] = {4, 8, 14, 11, 22, 15, 3, 7, 7, 9, 13,

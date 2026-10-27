@@ -60,14 +60,13 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
 
     uint32_t x_position = 0;
     bool previous_was_letter = false;
-    uint8_t pixel_color = color;
 
     for (size_t text_index = 0; text[text_index] != '\0'; ++text_index)
     {
         char character = text[text_index];
         if (character == ' ')
         {
-            x_position += SPACE_WIDTH_IN_PIXELS;
+            x_position += SPACE_IN_PIXELS;
             previous_was_letter = false;
             continue;
         }
@@ -79,14 +78,14 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
 
         if (previous_was_letter)
         {
-            x_position += SPACE_WIDTH_IN_PIXELS;
+            x_position += CHARACTERS_SEPARATOR_IN_PIXELS;
         }
         if (x_position >= SCREEN_WIDTH_IN_PIXELS)
         {
             break;
         }
 
-        uint8_t letter_index = (uint8_t)(character - INDEX_OF_A);
+        uint8_t letter_index = (uint8_t)(character - INDEX_OF_FIRST_CHAR);
         uint8_t letter_width = letters_width[letter_index];
         uint8_t letter_height = letters_height[letter_index];
 
@@ -104,7 +103,8 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                 {
                     break;
                 }
-
+                
+                // Background pixels are not changed. Whatever color is already in the buffer will remain.
                 if (letters_bin[letter_index][glyph_row][glyph_column] == 0)
                 {
                     continue;
@@ -119,8 +119,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                 {
                     uint32_t destination_bit = bit_offset + bit;
                     uint8_t mask = (uint8_t)(1u << (7u - destination_bit % 8u));
-                    uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
-                    // uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - bit)) & 1u);
+                    uint8_t color_bit = (uint8_t)((color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
                     uint32_t destination_byte = buffer_index + destination_bit / 8u;
 
                     if (color_bit != 0)

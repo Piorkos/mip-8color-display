@@ -25,13 +25,13 @@
 */
 // 									  R G B
 #define JDI_8COL_BLACK   0x00		//0 0 0
-#define JDI_8COL_GREEN   0x02		//0 0 1
-#define JDI_8COL_RED	 0x04		//0 1 0
-#define JDI_8COL_YELLOW  0x06		//0 1 1
-#define JDI_8COL_BLUE    0x08		//1 0 0
-#define JDI_8COL_CYAN    0x0A		//1 0 1
-#define JDI_8COL_MAGENTA 0x0C		//1 1 0
-#define JDI_8COL_WHITE   0x0E		//1 1 1
+#define JDI_8COL_BLUE    0x01		//0 0 1
+#define JDI_8COL_GREEN   0x02		//0 1 0
+#define JDI_8COL_CYAN    0x03		//0 1 1
+#define JDI_8COL_RED	 0x04		//1 0 0
+#define JDI_8COL_MAGENTA 0x05		//1 0 1
+#define JDI_8COL_YELLOW  0x06		//1 1 0
+#define JDI_8COL_WHITE   0x07		//1 1 1
 
 
 #ifdef __cplusplus
