@@ -72,7 +72,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
             continue;
         }
 
-        if (character < 'A' || character > 'Z')
+        if (character < '!' || character > '}')
         {
             continue;
         }
@@ -120,6 +120,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                     uint32_t destination_bit = bit_offset + bit;
                     uint8_t mask = (uint8_t)(1u << (7u - destination_bit % 8u));
                     uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
+                    // uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - bit)) & 1u);
                     uint32_t destination_byte = buffer_index + destination_bit / 8u;
 
                     if (color_bit != 0)

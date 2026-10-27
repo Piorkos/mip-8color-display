@@ -114,7 +114,7 @@ int main(void)
     MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLACK);
   }
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
-  HAL_Delay(1000);
+  HAL_Delay(500);
 
   // Clear all screen
   for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
@@ -122,69 +122,17 @@ int main(void)
     MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_WHITE);
   }
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
-  HAL_Delay(1000);
+  HAL_Delay(500);
+  
   
 
-  // Draw BLACK
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLACK);
-  }
-  MIP_8c_Display_RefreshScreen(10, 20);
-  HAL_Delay(1000);
-  
-  // Draw GREEN
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_GREEN);
-  }
-  MIP_8c_Display_RefreshScreen(25, 35);
-  HAL_Delay(1000);
-
-  // Draw RED
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_RED);
-  }
-  MIP_8c_Display_RefreshScreen(40, 50);
-  HAL_Delay(1000);
-  
-  // Draw YELLOW
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_YELLOW);
-  }
-  MIP_8c_Display_RefreshScreen(55, 65);
-  HAL_Delay(1000);
-
-  // Draw BLUE
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLUE);
-  }
-  MIP_8c_Display_RefreshScreen(70, 80);
-  HAL_Delay(1000);
-  
-  // Draw CYAN
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_CYAN);
-  }
-  MIP_8c_Display_RefreshScreen(85, 95);
-  HAL_Delay(1000);
-
-  // Draw MAGENTA
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_WHITE);
-  }
-  MIP_8c_Display_RefreshScreen(100, 110);
-  HAL_Delay(1000);
-
-  MIP_8c_Display_DrawText(100, JDI_8COL_RED, "HELLO MILOS");
-  MIP_8c_Display_RefreshScreen(100, 127);
-  MIP_8c_Display_DrawText(130, JDI_8COL_GREEN, "HOW YOU DOIN");
-  MIP_8c_Display_RefreshScreen(130, 170);
+  MIP_8c_Display_DrawText(3, JDI_8COL_GREEN, "!\"#$%&'()*+,-.");
+  MIP_8c_Display_DrawText(30, JDI_8COL_RED, "/0123456789:;");
+  MIP_8c_Display_DrawText(60, JDI_8COL_YELLOW, "<=>?@abcdefg");
+  MIP_8c_Display_DrawText(90, JDI_8COL_BLUE, "hjiklmnopq");
+  MIP_8c_Display_DrawText(120, JDI_8COL_CYAN, "rstuvwxyz");
+  MIP_8c_Display_DrawText(150, JDI_8COL_MAGENTA, "\\[\]^_`{|}");
+  MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
 
 
   /* USER CODE END 2 */
