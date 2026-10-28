@@ -88,6 +88,21 @@ void MIP_8c_Display_DrawVerticalLine(uint16_t x, uint8_t color);
 void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color);
 
 /**
+ * @brief Draws a bitmap shape, with 1 marking pixels to draw and 0 as transparent.
+ *
+ * The shape data must contain width * height elements in row-major order.
+ *
+ * @param x The screen column where the shape starts.
+ * @param y The screen row where the shape starts.
+ * @param color The 3-bit color to use for pixels marked 1.
+ * @param shape Pointer to the row-major array of 0/1 pixel values.
+ * @param width Shape width in pixels.
+ * @param height Shape height in pixels.
+ */
+void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color,
+                              const uint8_t *shape, uint16_t width, uint16_t height);
+
+/**
  * @brief Draws a line of text.
     * @param row The row (in PIXELS) where the text will be drawn.
     * @param color The color to use for the text.

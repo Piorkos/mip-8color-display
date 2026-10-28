@@ -94,6 +94,38 @@ void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color)
     }
 }
 
+void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color,
+                              const uint8_t *shape, uint16_t width, uint16_t height)
+{
+    if (shape == NULL || width == 0 || height == 0)
+    {
+        return;
+    }
+
+    for (uint32_t shape_y = 0; shape_y < height; ++shape_y)
+    {
+        uint32_t screen_y = (uint32_t)y + shape_y;
+        if (screen_y >= SCREEN_HEIGHT_IN_PIXELS)
+        {
+            break;
+        }
+
+        for (uint32_t shape_x = 0; shape_x < width; ++shape_x)
+        {
+            if (shape[(shape_y * width) + shape_x] != 1)
+            {
+                continue;
+            }
+
+            uint32_t screen_x = (uint32_t)x + shape_x;
+            if (screen_x < SCREEN_WIDTH_IN_PIXELS)
+            {
+                MIP_8c_Display_SetPixel((uint16_t)screen_x, (uint16_t)screen_y, color);
+            }
+        }
+    }
+}
+
 void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
 {
     if (text == NULL || row >= SCREEN_HEIGHT_IN_PIXELS)
@@ -181,6 +213,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
         previous_was_letter = true;
     }
 }
+
 
 
 

@@ -125,37 +125,9 @@ int main(void)
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
   HAL_Delay(500);
   
-  // for(int i = 0; i < 10; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_GREEN);
-  // }
 
-  // for(int i = 10; i < 20; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_RED);
-  // }
 
-  // for(int i = 20; i < 30; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_YELLOW);
-  // }
-
-  // for(int i = 30; i < 40; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLUE);
-  // }
-  
-  // for(int i = 40; i < 50; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_CYAN);
-  // }
-  
-  // for(int i = 50; i < 60; i++)
-  // {
-  //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
-  // }
-
-  uint8_t color = JDI_8COL_GREEN;
+  uint8_t color = JDI_8COL_YELLOW;
   MIP_8c_Display_SetPixel(10, 10, color);
   MIP_8c_Display_SetPixel(10, 11, color);
   MIP_8c_Display_SetPixel(10, 12, color);
@@ -183,6 +155,37 @@ int main(void)
 
   color = JDI_8COL_RED;
   MIP_8c_Display_DrawVerticalLine(30, color);
+
+  #define ENVELOPE_WIDTH  20
+  #define ENVELOPE_HEIGHT 20
+  uint16_t shape_width = 20;
+  uint16_t shape_height = 20;
+
+  static uint8_t envelope_icon[ENVELOPE_HEIGHT][ENVELOPE_WIDTH] = {
+      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+      {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+      {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0},
+      {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0},
+      {1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0},
+      {1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0},
+      {1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0},
+      {1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,0},
+      {1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0},
+      {1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,0},
+      {1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0},
+      {1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0},
+      {1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0},
+      {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0},
+      {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0},
+      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+      {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+  };
+  color = JDI_8COL_GREEN;
+  MIP_8c_Display_DrawShape(40, 100, color, *envelope_icon, shape_width, shape_height);
+
 
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
 
