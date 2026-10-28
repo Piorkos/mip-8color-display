@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "MIP-8c/mip-8c-display.h"
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -111,7 +112,7 @@ int main(void)
   // Clear all screen
   for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
   {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_BLACK);
+    MIP_8c_Display_DrawHorizontalLine(i, JDI_8COL_BLACK);
   }
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
   HAL_Delay(500);
@@ -119,7 +120,7 @@ int main(void)
   // Clear all screen
   for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
   {
-    MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_WHITE);
+    MIP_8c_Display_DrawHorizontalLine(i, JDI_8COL_WHITE);
   }
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
   HAL_Delay(500);
@@ -154,13 +155,35 @@ int main(void)
   //   MIP_8c_Display_DrawHorizontalLineColor(i, JDI_8COL_MAGENTA);
   // }
 
+  uint8_t color = JDI_8COL_GREEN;
+  MIP_8c_Display_SetPixel(10, 10, color);
+  MIP_8c_Display_SetPixel(10, 11, color);
+  MIP_8c_Display_SetPixel(10, 12, color);
+  MIP_8c_Display_SetPixel(10, 13, color);
+  MIP_8c_Display_SetPixel(11, 10, color);
+  MIP_8c_Display_SetPixel(11, 11, color);
+  MIP_8c_Display_SetPixel(11, 12, color);
+  MIP_8c_Display_SetPixel(11, 13, color);
+  MIP_8c_Display_SetPixel(12, 10, color);
+  MIP_8c_Display_SetPixel(12, 11, color);
+  MIP_8c_Display_SetPixel(12, 12, color);
+  MIP_8c_Display_SetPixel(12, 13, color);
+  MIP_8c_Display_SetPixel(13, 10, color);
+  MIP_8c_Display_SetPixel(13, 11, color);
+  MIP_8c_Display_SetPixel(13, 12, color);
+  MIP_8c_Display_SetPixel(13, 13, color);
+  MIP_8c_Display_SetPixel(14, 10, color);
+  MIP_8c_Display_SetPixel(14, 11, color);
+  MIP_8c_Display_SetPixel(14, 12, color);
+  MIP_8c_Display_SetPixel(14, 13, color);
+  MIP_8c_Display_SetPixel(15, 10, color);
+  MIP_8c_Display_SetPixel(15, 11, color);
+  MIP_8c_Display_SetPixel(15, 12, color);
+  MIP_8c_Display_SetPixel(15, 13, color);
 
-  MIP_8c_Display_DrawText(3, JDI_8COL_GREEN, "!\"#$%&'()*+,-.");
-  MIP_8c_Display_DrawText(30, JDI_8COL_RED, "/0123456789:;");
-  MIP_8c_Display_DrawText(60, JDI_8COL_YELLOW, "<=>?@abcdefg");
-  MIP_8c_Display_DrawText(90, JDI_8COL_BLUE, "hj iklmnopq");
-  MIP_8c_Display_DrawText(120, JDI_8COL_CYAN, "czesc! co tam?");
-  MIP_8c_Display_DrawText(150, JDI_8COL_MAGENTA, "\\[\]^_`{|}");
+  color = JDI_8COL_RED;
+  MIP_8c_Display_DrawVerticalLine(30, color);
+
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
 
 

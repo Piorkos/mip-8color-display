@@ -60,15 +60,32 @@ void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config);
     * @param x row, in PIXELS
     * @param color The color to use for the horizontal line. The color can be one of the following:
     *  - JDI_8COL_BLACK: Black color (0x00)
+    *  - JDI_8COL_BLUE: Blue color (0x01)
     *  - JDI_8COL_GREEN: Green color (0x02)
+    *  - JDI_8COL_CYAN: Cyan color (0x03)
     *  - JDI_8COL_RED: Red color (0x04)
+    *  - JDI_8COL_MAGENTA: Magenta color (0x05)
     *  - JDI_8COL_YELLOW: Yellow color (0x06)
-    *  - JDI_8COL_BLUE: Blue color (0x08)
-    *  - JDI_8COL_CYAN: Cyan color (0x0A)
-    *  - JDI_8COL_MAGENTA: Magenta color (0x0C)
-    *  - JDI_8COL_WHITE: White color (0x0E)
+    *  - JDI_8COL_WHITE: White color (0x07)
     */
-void MIP_8c_Display_DrawHorizontalLineColor(uint16_t x, uint8_t color);
+void MIP_8c_Display_DrawHorizontalLine(uint16_t x, uint8_t color);
+
+/**
+ * @brief Draws a vertical line from top to bottom of the display.
+ *
+ * @param x The pixel column, from 0 to SCREEN_WIDTH_IN_PIXELS - 1.
+ * @param color The 3-bit color to use for the line, for example JDI_8COL_RED.
+ */
+void MIP_8c_Display_DrawVerticalLine(uint16_t x, uint8_t color);
+
+/**
+ * @brief Sets the color of a single pixel.
+ *
+ * @param x The pixel column, from 0 to SCREEN_WIDTH_IN_PIXELS - 1.
+ * @param y The pixel row, from 0 to SCREEN_HEIGHT_IN_PIXELS - 1.
+ * @param color The 3-bit color to set, for example JDI_8COL_RED.
+ */
+void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color);
 
 /**
  * @brief Draws a line of text.

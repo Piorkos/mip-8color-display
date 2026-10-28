@@ -41,13 +41,56 @@ void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config)
 }
 
 
-void MIP_8c_Display_DrawHorizontalLineColor(uint16_t x, uint8_t color)
+void MIP_8c_Display_DrawHorizontalLine(uint16_t x, uint8_t color)
 {
     for(int i = 0; i < SCREEN_WIDTH_IN_BYTES; i += 3)
     {
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i] = (color << 5) | (color << 2) | (color >> 1);
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i + 1] = (color << 7) | (color << 4) | (color << 1) | (color >> 2);
         screen_buffer[x*SCREEN_WIDTH_IN_BYTES + i + 2] = (color << 6) | (color << 3) | color;
+    }
+}
+
+void MIP_8c_Display_DrawVerticalLine(uint16_t x, uint8_t color)
+{
+    if (x >= SCREEN_WIDTH_IN_PIXELS)
+    {
+        return;
+    }
+
+    for (uint16_t y = 0; y < SCREEN_HEIGHT_IN_PIXELS; ++y)
+    {
+        MIP_8c_Display_SetPixel(x, y, color);
+    }
+}
+
+void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color)
+{
+    if (x >= SCREEN_WIDTH_IN_PIXELS || y >= SCREEN_HEIGHT_IN_PIXELS)
+    {
+        return;
+    }
+
+    uint32_t pixel_bit_index = (uint32_t)x * BITS_PER_PIXEL;
+    uint32_t buffer_index = (uint32_t)y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
+    uint8_t bit_offset = (uint8_t)(pixel_bit_index % 8u);
+    uint8_t pixel_color = color & ((1u << BITS_PER_PIXEL) - 1u);
+
+    for (uint8_t bit = 0; bit < BITS_PER_PIXEL; ++bit)
+    {
+        uint32_t destination_bit = bit_offset + bit;
+        uint32_t destination_byte = buffer_index + destination_bit / 8u;
+        uint8_t mask = (uint8_t)(1u << (7u - destination_bit % 8u));
+        uint8_t color_bit = (uint8_t)((pixel_color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
+
+        if (color_bit != 0)
+        {
+            screen_buffer[destination_byte] |= mask;
+        }
+        else
+        {
+            screen_buffer[destination_byte] &= (uint8_t)~mask;
+        }
     }
 }
 
@@ -138,6 +181,8 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
         previous_was_letter = true;
     }
 }
+
+
 
 void MIP_8c_Display_RefreshScreen(uint8_t line_start, uint8_t line_end)
 {
