@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "MIP-8c/mip-8c-display.h"
+#include "MIP-8c/graphics/gfx_icons.h"
 #include <stdint.h>
 /* USER CODE END Includes */
 
@@ -156,35 +157,18 @@ int main(void)
   color = JDI_8COL_RED;
   MIP_8c_Display_DrawVerticalLine(30, color);
 
-  #define ENVELOPE_WIDTH  20
+  #define ENVELOPE_WIDTH  30
   #define ENVELOPE_HEIGHT 20
-  uint16_t shape_width = 20;
-  uint16_t shape_height = 20;
 
-  static uint8_t envelope_icon[ENVELOPE_HEIGHT][ENVELOPE_WIDTH] = {
-      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-      {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
-      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
-      {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0},
-      {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0},
-      {1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0},
-      {1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0},
-      {1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0},
-      {1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,0},
-      {1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0},
-      {1,1,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,1,1,0},
-      {1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0},
-      {1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,0,1,1,0},
-      {1,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0},
-      {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0},
-      {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0},
-      {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
-      {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-  };
-  color = JDI_8COL_GREEN;
-  MIP_8c_Display_DrawShape(40, 100, color, *envelope_icon, shape_width, shape_height);
+
+  color = JDI_8COL_BLUE;
+  
+  MIP_8c_Display_DrawShape(60, 50, color, &gfx_icon_envelope);
+  color = JDI_8COL_MAGENTA;
+  MIP_8c_Display_DrawShape(110, 50, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(60, 90, color, &gfx_icon_envelope);
+
+  MIP_8c_Display_DrawText(120, color, "HOLA! hola?");
 
 
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);

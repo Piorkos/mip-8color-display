@@ -13,6 +13,9 @@
 #include "stm32wbxx_hal_spi.h"
 #include <stdint.h>
 
+
+#include "MIP-8c/graphics/gfx_icons.h"
+
 // Display resolution
 #define SCREEN_WIDTH_IN_PIXELS  	176
 #define SCREEN_HEIGHT_IN_PIXELS 	176
@@ -99,8 +102,7 @@ void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color);
  * @param width Shape width in pixels.
  * @param height Shape height in pixels.
  */
-void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color,
-                              const uint8_t *shape, uint16_t width, uint16_t height);
+void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_icons_t *shape);
 
 /**
  * @brief Draws a line of text.
