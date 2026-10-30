@@ -93,14 +93,13 @@ void MIP_8c_Display_SetPixel(uint16_t x, uint16_t y, uint8_t color);
 /**
  * @brief Draws a bitmap shape, with 1 marking pixels to draw and 0 as transparent.
  *
- * The shape data must contain width * height elements in row-major order.
+ * The shape data uses one MSB-first bit per pixel, with each row padded to a
+ * whole number of bytes. Bits beyond the shape width are ignored.
  *
  * @param x The screen column where the shape starts.
  * @param y The screen row where the shape starts.
  * @param color The 3-bit color to use for pixels marked 1.
- * @param shape Pointer to the row-major array of 0/1 pixel values.
- * @param width Shape width in pixels.
- * @param height Shape height in pixels.
+ * @param shape Pointer to the packed bitmap and its pixel dimensions.
  */
 void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_icons_t *shape);
 

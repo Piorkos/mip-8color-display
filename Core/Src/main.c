@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "MIP-8c/mip-8c-display.h"
 #include "MIP-8c/graphics/gfx_icons.h"
+#include "stm32wbxx_hal.h"
 #include <stdint.h>
 /* USER CODE END Includes */
 
@@ -128,48 +129,22 @@ int main(void)
   
 
 
-  uint8_t color = JDI_8COL_YELLOW;
-  MIP_8c_Display_SetPixel(10, 10, color);
-  MIP_8c_Display_SetPixel(10, 11, color);
-  MIP_8c_Display_SetPixel(10, 12, color);
-  MIP_8c_Display_SetPixel(10, 13, color);
-  MIP_8c_Display_SetPixel(11, 10, color);
-  MIP_8c_Display_SetPixel(11, 11, color);
-  MIP_8c_Display_SetPixel(11, 12, color);
-  MIP_8c_Display_SetPixel(11, 13, color);
-  MIP_8c_Display_SetPixel(12, 10, color);
-  MIP_8c_Display_SetPixel(12, 11, color);
-  MIP_8c_Display_SetPixel(12, 12, color);
-  MIP_8c_Display_SetPixel(12, 13, color);
-  MIP_8c_Display_SetPixel(13, 10, color);
-  MIP_8c_Display_SetPixel(13, 11, color);
-  MIP_8c_Display_SetPixel(13, 12, color);
-  MIP_8c_Display_SetPixel(13, 13, color);
-  MIP_8c_Display_SetPixel(14, 10, color);
-  MIP_8c_Display_SetPixel(14, 11, color);
-  MIP_8c_Display_SetPixel(14, 12, color);
-  MIP_8c_Display_SetPixel(14, 13, color);
-  MIP_8c_Display_SetPixel(15, 10, color);
-  MIP_8c_Display_SetPixel(15, 11, color);
-  MIP_8c_Display_SetPixel(15, 12, color);
-  MIP_8c_Display_SetPixel(15, 13, color);
-
-  color = JDI_8COL_RED;
-  MIP_8c_Display_DrawVerticalLine(30, color);
-
-  #define ENVELOPE_WIDTH  30
-  #define ENVELOPE_HEIGHT 20
-
-
-  color = JDI_8COL_BLUE;
-  
-  MIP_8c_Display_DrawShape(60, 50, color, &gfx_icon_envelope);
-  color = JDI_8COL_MAGENTA;
-  MIP_8c_Display_DrawShape(110, 50, color, &gfx_icon_envelope);
-  MIP_8c_Display_DrawShape(60, 90, color, &gfx_icon_envelope);
-
-  MIP_8c_Display_DrawText(120, color, "HOLA! hola?");
-
+  uint8_t color = JDI_8COL_RED;
+  uint32_t start = HAL_GetTick();
+  MIP_8c_Display_DrawShape(10, 10, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(50, 10, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(90, 10, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(10, 50, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(50, 50, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(90, 50, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(10, 90, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(50, 90, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(90, 90, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(10, 130, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(50, 130, color, &gfx_icon_envelope);
+  MIP_8c_Display_DrawShape(90, 130, color, &gfx_icon_envelope);
+  uint32_t stop = HAL_GetTick();
+  uint32_t delta = stop - start;
 
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
 

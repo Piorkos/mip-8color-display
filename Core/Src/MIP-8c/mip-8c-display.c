@@ -101,6 +101,15 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
         return;
     }
 
+    static const uint16_t expanded_nibble_masks[16] = {
+        0x000, 0x007, 0x038, 0x03F,
+        0x1C0, 0x1C7, 0x1F8, 0x1FF,
+        0xE00, 0xE07, 0xE38, 0xE3F,
+        0xFC0, 0xFC7, 0xFF8, 0xFFF
+    };
+    uint32_t bytes_per_row = ((uint32_t)shape->width + 7u) / 8u;
+    uint32_t repeated_color = (uint32_t)(color & 0x07u) * 0x249249u;
+
     for (uint32_t shape_y = 0; shape_y < shape->height; ++shape_y)
     {
         uint32_t screen_y = (uint32_t)y + shape_y;
@@ -110,56 +119,65 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
             break;
         }
 
-        for (uint32_t shape_x = 0; shape_x < shape->width; ++shape_x)
+        for (uint32_t shape_x = 0; shape_x < shape->width; shape_x += 8u)
         {
-            if (shape->data[
-                (shape_y * shape->width) + shape_x
-            ] != 1)
+            uint32_t screen_x = (uint32_t)x + shape_x;
+
+            if (screen_x >= SCREEN_WIDTH_IN_PIXELS)
+            {
+                break;
+            }
+
+            uint32_t source_index = shape_y * bytes_per_row + shape_x / 8u;
+            uint8_t source_bits = shape->data[source_index];
+            uint32_t valid_pixels = (uint32_t)shape->width - shape_x;
+            uint32_t visible_pixels = SCREEN_WIDTH_IN_PIXELS - screen_x;
+
+            if (valid_pixels > 8u)
+            {
+                valid_pixels = 8u;
+            }
+            if (valid_pixels > visible_pixels)
+            {
+                valid_pixels = visible_pixels;
+            }
+
+            source_bits &= (uint8_t)(0xFFu << (8u - valid_pixels));
+
+            uint32_t pixel_mask =
+                ((uint32_t)expanded_nibble_masks[source_bits >> 4] << 12) |
+                expanded_nibble_masks[source_bits & 0x0Fu];
+            if (pixel_mask == 0)
             {
                 continue;
             }
 
-            uint32_t screen_x = (uint32_t)x + shape_x;
+            uint32_t pixel_bits = repeated_color & pixel_mask;
+            uint32_t pixel_bit_index = screen_x * BITS_PER_PIXEL;
+            uint32_t buffer_index =
+                screen_y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
+            uint32_t bit_offset = pixel_bit_index % 8u;
+            uint32_t shifted_mask = pixel_mask << (8u - bit_offset);
+            uint32_t shifted_bits = pixel_bits << (8u - bit_offset);
+            uint32_t buffer_bytes = SCREEN_WIDTH_IN_BYTES - pixel_bit_index / 8u;
 
-            if (screen_x < SCREEN_WIDTH_IN_PIXELS)
+            if (buffer_bytes > 4u)
             {
-                MIP_8c_Display_SetPixel(
-                    (uint16_t)screen_x,
-                    (uint16_t)screen_y,
-                    color
-                );
+                buffer_bytes = 4u;
+            }
+
+            for (uint32_t byte = 0; byte < buffer_bytes; ++byte)
+            {
+                uint32_t shift = 24u - byte * 8u;
+                uint8_t byte_mask = (uint8_t)(shifted_mask >> shift);
+                uint8_t byte_bits = (uint8_t)(shifted_bits >> shift);
+
+                screen_buffer[buffer_index + byte] =
+                    (screen_buffer[buffer_index + byte] & (uint8_t)~byte_mask) |
+                    (byte_bits & byte_mask);
             }
         }
     }
-
-
-    // if (shape == NULL || width == 0 || height == 0)
-    // {
-    //     return;
-    // }
-
-    // for (uint32_t shape_y = 0; shape_y < height; ++shape_y)
-    // {
-    //     uint32_t screen_y = (uint32_t)y + shape_y;
-    //     if (screen_y >= SCREEN_HEIGHT_IN_PIXELS)
-    //     {
-    //         break;
-    //     }
-
-    //     for (uint32_t shape_x = 0; shape_x < width; ++shape_x)
-    //     {
-    //         if (shape[(shape_y * width) + shape_x] != 1)
-    //         {
-    //             continue;
-    //         }
-
-    //         uint32_t screen_x = (uint32_t)x + shape_x;
-    //         if (screen_x < SCREEN_WIDTH_IN_PIXELS)
-    //         {
-    //             MIP_8c_Display_SetPixel((uint16_t)screen_x, (uint16_t)screen_y, color);
-    //         }
-    //     }
-    // }
 }
 
 void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
