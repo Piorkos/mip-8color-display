@@ -20,6 +20,44 @@ static uint8_t screen_buffer[(SCREEN_WIDTH_IN_PIXELS * SCREEN_HEIGHT_IN_PIXELS *
 static MIP_8c_Display_Config_t display_config;
 static bool vcom_bool_ = false;
 
+static const uint16_t expanded_nibble_masks[16] = {
+    0x000, 0x007, 0x038, 0x03F,
+    0x1C0, 0x1C7, 0x1F8, 0x1FF,
+    0xE00, 0xE07, 0xE38, 0xE3F,
+    0xFC0, 0xFC7, 0xFF8, 0xFFF
+};
+
+static void draw_packed_pixels(uint32_t x, uint32_t y, uint32_t pixel_mask, uint32_t repeated_color)
+{
+    if (pixel_mask == 0)
+    {
+        return;
+    }
+
+    uint32_t pixel_bit_index = x * BITS_PER_PIXEL;
+    uint32_t buffer_index = y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
+    uint32_t bit_offset = pixel_bit_index % 8u;
+    uint32_t shifted_mask = pixel_mask << (8u - bit_offset);
+    uint32_t shifted_bits = (repeated_color & pixel_mask) << (8u - bit_offset);
+    uint32_t buffer_bytes = SCREEN_WIDTH_IN_BYTES - pixel_bit_index / 8u;
+
+    if (buffer_bytes > 4u)
+    {
+        buffer_bytes = 4u;
+    }
+
+    for (uint32_t byte = 0; byte < buffer_bytes; ++byte)
+    {
+        uint32_t shift = 24u - byte * 8u;
+        uint8_t byte_mask = (uint8_t)(shifted_mask >> shift);
+        uint8_t byte_bits = (uint8_t)(shifted_bits >> shift);
+
+        screen_buffer[buffer_index + byte] =
+            (screen_buffer[buffer_index + byte] & (uint8_t)~byte_mask) |
+            (byte_bits & byte_mask);
+    }
+}
+
 
 void MIP_8c_Display_Init(const MIP_8c_Display_Config_t *config)
 {
@@ -101,12 +139,6 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
         return;
     }
 
-    static const uint16_t expanded_nibble_masks[16] = {
-        0x000, 0x007, 0x038, 0x03F,
-        0x1C0, 0x1C7, 0x1F8, 0x1FF,
-        0xE00, 0xE07, 0xE38, 0xE3F,
-        0xFC0, 0xFC7, 0xFF8, 0xFFF
-    };
     uint32_t bytes_per_row = ((uint32_t)shape->width + 7u) / 8u;
     uint32_t repeated_color = (uint32_t)(color & 0x07u) * 0x249249u;
 
@@ -147,35 +179,7 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
             uint32_t pixel_mask =
                 ((uint32_t)expanded_nibble_masks[source_bits >> 4] << 12) |
                 expanded_nibble_masks[source_bits & 0x0Fu];
-            if (pixel_mask == 0)
-            {
-                continue;
-            }
-
-            uint32_t pixel_bits = repeated_color & pixel_mask;
-            uint32_t pixel_bit_index = screen_x * BITS_PER_PIXEL;
-            uint32_t buffer_index =
-                screen_y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
-            uint32_t bit_offset = pixel_bit_index % 8u;
-            uint32_t shifted_mask = pixel_mask << (8u - bit_offset);
-            uint32_t shifted_bits = pixel_bits << (8u - bit_offset);
-            uint32_t buffer_bytes = SCREEN_WIDTH_IN_BYTES - pixel_bit_index / 8u;
-
-            if (buffer_bytes > 4u)
-            {
-                buffer_bytes = 4u;
-            }
-
-            for (uint32_t byte = 0; byte < buffer_bytes; ++byte)
-            {
-                uint32_t shift = 24u - byte * 8u;
-                uint8_t byte_mask = (uint8_t)(shifted_mask >> shift);
-                uint8_t byte_bits = (uint8_t)(shifted_bits >> shift);
-
-                screen_buffer[buffer_index + byte] =
-                    (screen_buffer[buffer_index + byte] & (uint8_t)~byte_mask) |
-                    (byte_bits & byte_mask);
-            }
+            draw_packed_pixels(screen_x, screen_y, pixel_mask, repeated_color);
         }
     }
 }
@@ -188,6 +192,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
     }
 
     uint32_t x_position = 0;
+    uint32_t repeated_color = (uint32_t)(color & 0x07u) * 0x249249u;
     bool previous_was_letter = false;
 
     for (size_t text_index = 0; text[text_index] != '\0'; ++text_index)
@@ -226,42 +231,32 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                 break;
             }
 
-            for (uint8_t glyph_column = 0; glyph_column < letter_width; ++glyph_column)
+            for (uint8_t glyph_column = 0; glyph_column < letter_width; glyph_column += 8u)
             {
-                if (x_position + glyph_column >= SCREEN_WIDTH_IN_PIXELS)
+                uint32_t screen_x = x_position + glyph_column;
+                if (screen_x >= SCREEN_WIDTH_IN_PIXELS)
                 {
                     break;
                 }
-                
-                // Background pixels are not changed. Whatever color is already in the buffer will remain.
-                uint8_t glyph_byte = letters_bin[letter_index][glyph_row][glyph_column / 8u];
-                uint8_t glyph_mask = (uint8_t)(0x80u >> (glyph_column % 8u));
-                if ((glyph_byte & glyph_mask) == 0)
+
+                uint32_t valid_pixels = (uint32_t)letter_width - glyph_column;
+                uint32_t visible_pixels = SCREEN_WIDTH_IN_PIXELS - screen_x;
+                if (valid_pixels > 8u)
                 {
-                    continue;
+                    valid_pixels = 8u;
+                }
+                if (valid_pixels > visible_pixels)
+                {
+                    valid_pixels = visible_pixels;
                 }
 
-                uint32_t pixel_bit_index = x_position * BITS_PER_PIXEL;
-                pixel_bit_index += glyph_column * BITS_PER_PIXEL;
-                uint32_t buffer_index = screen_y * SCREEN_WIDTH_IN_BYTES + pixel_bit_index / 8u;
-                uint8_t bit_offset = (uint8_t)(pixel_bit_index % 8u);
+                uint8_t source_bits = letters_bin[letter_index][glyph_row][glyph_column / 8u];
+                source_bits &= (uint8_t)(0xFFu << (8u - valid_pixels));
 
-                for (uint8_t bit = 0; bit < BITS_PER_PIXEL; ++bit)
-                {
-                    uint32_t destination_bit = bit_offset + bit;
-                    uint8_t mask = (uint8_t)(1u << (7u - destination_bit % 8u));
-                    uint8_t color_bit = (uint8_t)((color >> (BITS_PER_PIXEL - 1u - bit)) & 1u);
-                    uint32_t destination_byte = buffer_index + destination_bit / 8u;
-
-                    if (color_bit != 0)
-                    {
-                        screen_buffer[destination_byte] |= mask;
-                    }
-                    else
-                    {
-                        screen_buffer[destination_byte] &= (uint8_t)~mask;
-                    }
-                }
+                uint32_t pixel_mask =
+                    ((uint32_t)expanded_nibble_masks[source_bits >> 4] << 12) |
+                    expanded_nibble_masks[source_bits & 0x0Fu];
+                draw_packed_pixels(screen_x, screen_y, pixel_mask, repeated_color);
             }
         }
 
