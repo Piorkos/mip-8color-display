@@ -234,7 +234,9 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                 }
                 
                 // Background pixels are not changed. Whatever color is already in the buffer will remain.
-                if (letters_bin[letter_index][glyph_row][glyph_column] == 0)
+                uint8_t glyph_byte = letters_bin[letter_index][glyph_row][glyph_column / 8u];
+                uint8_t glyph_mask = (uint8_t)(0x80u >> (glyph_column % 8u));
+                if ((glyph_byte & glyph_mask) == 0)
                 {
                     continue;
                 }
