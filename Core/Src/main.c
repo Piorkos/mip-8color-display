@@ -19,6 +19,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "spi.h"
+#include "stm32wbxx_hal_tim.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -95,7 +97,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_Base_Start(&htim2);
 
 
   HAL_Delay(1000);
@@ -130,7 +135,8 @@ int main(void)
 
 
   uint8_t color = JDI_8COL_RED;
-  uint32_t start = HAL_GetTick();
+  // uint32_t start = HAL_GetTick();
+  uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
   MIP_8c_Display_DrawShape(10, 10, color, &gfx_icon_envelope);
   MIP_8c_Display_DrawShape(50, 10, color, &gfx_icon_envelope);
   MIP_8c_Display_DrawShape(90, 10, color, &gfx_icon_envelope);
@@ -143,7 +149,8 @@ int main(void)
   MIP_8c_Display_DrawShape(10, 130, color, &gfx_icon_envelope);
   MIP_8c_Display_DrawShape(50, 130, color, &gfx_icon_envelope);
   MIP_8c_Display_DrawShape(90, 130, color, &gfx_icon_envelope);
-  uint32_t stop = HAL_GetTick();
+  // uint32_t stop = HAL_GetTick();
+  uint32_t stop = __HAL_TIM_GET_COUNTER(&htim2);
   uint32_t delta = stop - start;
 
   MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
