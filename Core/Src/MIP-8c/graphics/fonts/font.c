@@ -1,24 +1,30 @@
 /*
- * font.h
- *
- *  Created on: 25.10.2026
+ *  Created on: 31.10.2026
  *      Author: Dominik Piórkowski
  */
-#include <stdint.h>
+
+#include "graphics/gfx_font.h";
+
 
 #define INDEX_OF_FIRST_CHAR 33      // ASCII code of the first character in the font array, i.e. if first is '!' then INDEX_OF_FIRST_CHAR = 33 
 #define SPACE_IN_PIXELS 12          // Width of the space character in pixels
 #define CHARACTERS_SEPARATOR_IN_PIXELS 3    // Width of the separator between characters (when there is no space betweern them)
 
+/* Full glyph bitmap width and height in pixels, including blank side margins. */
+/* Defines dimensions of the packed bitmap array for each character. */
+#define LETTERS_BIN_WIDTH_IN_PIXELS     22u
+#define LETTERS_BIN_HEIGHT_IN_PIXELS    20u
 
-const uint8_t letters_width[95] = {4, 8, 14, 11, 22, 15, 3, 7, 7, 9, 13,
+/* Visible character width in pixels, excluding blank side margins. */
+static const uint8_t letters_width[95] = {4, 8, 14, 11, 22, 15, 3, 7, 7, 9, 13,
      4, 7, 3, 9, 12, 9, 11, 11, 12, 11, 11, 11, 12, 12, 4, 5, 13, 12,
       12, 9, 16, 14, 12, 12, 13, 10, 10, 13, 13, 8, 8, 13, 10, 15, 13,
        15, 12, 15, 13, 12, 12, 12, 14, 21, 13, 13, 12, 6, 10, 6, 12, 14,
         4, 10, 11, 10, 11, 11, 7, 11, 10, 3, 6, 11, 3, 17, 10, 12, 11, 11,
          8, 10, 7, 10, 11, 18, 11, 11, 10, 10, 3, 10};
 
-const uint8_t letters_height[95] = {16, 6, 16, 19, 16, 16, 6, 20, 20, 10,
+/* Visible character height in pixels, excluding blank side margins. */
+static const uint8_t letters_height[95] = {16, 6, 16, 19, 16, 16, 6, 20, 20, 10,
      16, 19, 11, 16, 19, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 19,
       15, 14, 15, 16, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
        16, 16, 16, 16, 16, 20, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
@@ -27,7 +33,7 @@ const uint8_t letters_height[95] = {16, 6, 16, 19, 16, 16, 6, 20, 20, 10,
 
 
 /* One bit per pixel, packed MSB-first; each 22-pixel row uses 3 bytes. */
-const uint8_t letters_bin[93][20][3] = {
+static const uint8_t letters_bin[93][LETTERS_BIN_HEIGHT_IN_PIXELS][(LETTERS_BIN_WIDTH_IN_PIXELS + 7u) / 8u] = {
     { /* letter_001 */
         {0x00, 0x00, 0x00},
         {0xF0, 0x00, 0x00},
@@ -2074,4 +2080,16 @@ const uint8_t letters_bin[93][20][3] = {
         {0xFC, 0x00, 0x00},
         {0xF0, 0x00, 0x00}
     }
+};
+
+
+const gfx_fonts_t gfx_fonts_pues = {
+    .index_of_first_char = INDEX_OF_FIRST_CHAR,
+    .space_in_pixels = SPACE_IN_PIXELS,
+    .characters_separator_in_pixels = CHARACTERS_SEPARATOR_IN_PIXELS,
+    .letter_bin_width_in_px = LETTERS_BIN_WIDTH_IN_PIXELS,
+    .letter_bin_height_in_px = LETTERS_BIN_HEIGHT_IN_PIXELS,
+    .letters_width = &letters_width[0],
+    .letters_height = &letters_height[0],
+    .letters_bin = &letters_bin[0][0][0]
 };

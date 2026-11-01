@@ -15,17 +15,15 @@
 
 
 #include "MIP-8c/graphics/gfx_icons.h"
+#include "MIP-8c/graphics/gfx_font.h"
 
 // Display resolution
+#define BITS_PER_PIXEL              3u   // 3 bits per pixel for 8 colors
 #define SCREEN_WIDTH_IN_PIXELS  	176
 #define SCREEN_HEIGHT_IN_PIXELS 	176
-#define SCREEN_WIDTH_IN_BYTES       3 * (SCREEN_WIDTH_IN_PIXELS / 8)
+#define SCREEN_WIDTH_IN_BYTES       BITS_PER_PIXEL * (SCREEN_WIDTH_IN_PIXELS / 8)
 
-#define BITS_PER_PIXEL 3u   // 3 bits per pixel for 8 colors
-
-/**
- *  Color definitions for JDI 8-color MIP display
-*/
+/* Color definitions for JDI 8-color MIP display */
 // 									  R G B
 #define JDI_8COL_BLACK   0x00		//0 0 0
 #define JDI_8COL_BLUE    0x01		//0 0 1
@@ -41,7 +39,7 @@
 extern "C" {
 #endif
 
-/** SPI and GPIO configuration */
+/* SPI and GPIO configuration */
 typedef struct
 {
     SPI_HandleTypeDef *hspi;
@@ -109,7 +107,7 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
     * @param color The color to use for the text.
     * @param text The null-terminated string of text to draw.
  */
-void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text);
+void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text);
 
 /**
     * @brief Refreshes the screen by sending the updated screen buffer to the display.

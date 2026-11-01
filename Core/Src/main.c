@@ -134,17 +134,19 @@ int main(void)
   
 
 
-  uint8_t color = JDI_8COL_RED;
+  uint8_t color = JDI_8COL_MAGENTA;
   // uint32_t start = HAL_GetTick();
   uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
 
-  MIP_8c_Display_DrawText(1, color, "HOLA! hola?hej");
-  MIP_8c_Display_DrawText(25, color, "ABCDEFGHIJ12");
-  MIP_8c_Display_DrawText(50, color, "KLMNOPQRST1");
-  MIP_8c_Display_DrawText(75, color, "UVWXYZabcd");
-  MIP_8c_Display_DrawText(100, color, "efghijklmn0987");
-  MIP_8c_Display_DrawText(125, color, "opqrstuvwx54");
-  MIP_8c_Display_DrawText(150, color, "!@#$<^&*()-;:|");
+  MIP_8c_Display_DrawText(1, color, &gfx_font_international_70, "!&+={}");
+  MIP_8c_Display_DrawText(90, color, &gfx_font_international_70, "10:51");
+  // MIP_8c_Display_DrawText(1, color, gfx_font_international_70, "HOLA! hola?hej");
+  // MIP_8c_Display_DrawText(25, color, "ABCDEFGHIJ12");
+  // MIP_8c_Display_DrawText(50, color, "KLMNOPQRST1");
+  // MIP_8c_Display_DrawText(75, color, "UVWXYZabcd");
+  // MIP_8c_Display_DrawText(100, color, "efghijklmn0987");
+  // MIP_8c_Display_DrawText(125, color, "opqrstuvwx54");
+  // MIP_8c_Display_DrawText(150, color, "!@#$<^&*()-;:|");
 
   // uint32_t stop = HAL_GetTick();
   uint32_t stop = __HAL_TIM_GET_COUNTER(&htim2);

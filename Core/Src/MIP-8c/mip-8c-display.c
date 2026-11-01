@@ -10,7 +10,7 @@
 
 // #include "main.h"
 #include "MIP-8c/mip-8c-display.h"
-#include "MIP-8c/font.h"
+#include "graphics/gfx_font.h"
 #include "stm32wbxx_hal_def.h"
 
 
@@ -184,7 +184,7 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
     }
 }
 
-void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
+void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text)
 {
     if (text == NULL || row >= SCREEN_HEIGHT_IN_PIXELS)
     {
@@ -200,7 +200,7 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
         char character = text[text_index];
         if (character == ' ')
         {
-            x_position += SPACE_IN_PIXELS;
+            x_position += font->space_in_pixels;
             previous_was_letter = false;
             continue;
         }
@@ -212,16 +212,16 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
 
         if (previous_was_letter)
         {
-            x_position += CHARACTERS_SEPARATOR_IN_PIXELS;
+            x_position += font->characters_separator_in_pixels;
         }
         if (x_position >= SCREEN_WIDTH_IN_PIXELS)
         {
             break;
         }
 
-        uint8_t letter_index = (uint8_t)(character - INDEX_OF_FIRST_CHAR);
-        uint8_t letter_width = letters_width[letter_index];
-        uint8_t letter_height = letters_height[letter_index];
+        uint8_t letter_index = (uint8_t)(character - font->index_of_first_char);
+        uint8_t letter_width = font->letters_width[letter_index];
+        uint8_t letter_height = font->letters_height[letter_index];
 
         for (uint8_t glyph_row = 0; glyph_row < letter_height; ++glyph_row)
         {
@@ -250,7 +250,11 @@ void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, const char *text)
                     valid_pixels = visible_pixels;
                 }
 
-                uint8_t source_bits = letters_bin[letter_index][glyph_row][glyph_column / 8u];
+                uint32_t glyph_byte_index =
+                    // ((uint32_t)letter_index * 20u + glyph_row) *
+                    ((uint32_t)letter_index * font->letter_bin_height_in_px + glyph_row) *
+                    ((font->letter_bin_width_in_px + 7u) / 8u) + glyph_column / 8u;
+                uint8_t source_bits = font->letters_bin[glyph_byte_index];
                 source_bits &= (uint8_t)(0xFFu << (8u - valid_pixels));
 
                 uint32_t pixel_mask =

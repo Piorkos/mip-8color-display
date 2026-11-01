@@ -46,6 +46,8 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/mip-8c-display.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/gfx_icons.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_international_70.c
 )
 
 # Add include paths
