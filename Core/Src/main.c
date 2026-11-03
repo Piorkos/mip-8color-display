@@ -138,10 +138,14 @@ int main(void)
   uint8_t color = JDI_8COL_CYAN;
   uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
 
-  MIP_8c_Display_DrawShape(10, 30, color, &gfx_icon_envelope);
-
   color = JDI_8COL_BLACK;
-  MIP_8c_Display_DrawText(10, 45, color, &gfx_font_international_70, "10:51");
+  MIP_8c_Display_DrawText(1, 5, color, &gfx_font_bitmap_robo_cond_l, "|dA1.9876");
+  MIP_8c_Display_DrawText(1, 80, color, &gfx_font_bitmap_robo_cond_m, "|dA1.9876");
+  MIP_8c_Display_DrawText(1, 125, color, &gfx_font_bitmap_robo_cond_s, "|dA1.9876");
+  // MIP_8c_Display_DrawText(1, 40, color, &gfx_font_bitmap_robo_cond_s, "ABCDEFGH");
+  // MIP_8c_Display_DrawText(1, 75, color, &gfx_font_bitmap_robo_cond_m, "abcdefgh");
+  // // MIP_8c_Display_DrawText(1, 110, color, &gfx_font_bitmap_robo_cond_s, "!@#$\%^&");
+  // MIP_8c_Display_DrawText(1, 145, color, &gfx_font_bitmap_robo_cond_m, "{}[]|,.");
 
   uint32_t stop = __HAL_TIM_GET_COUNTER(&htim2);
   uint32_t delta = stop - start;

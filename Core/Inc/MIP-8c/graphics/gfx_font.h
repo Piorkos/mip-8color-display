@@ -23,8 +23,10 @@ typedef struct
     const uint8_t *letters_bin;
 } gfx_fonts_t;
 
-extern const gfx_fonts_t gfx_fonts_pues;
-extern const gfx_fonts_t gfx_font_international_70;
+
+extern const gfx_fonts_t gfx_font_bitmap_robo_cond_s;
+extern const gfx_fonts_t gfx_font_bitmap_robo_cond_m;
+extern const gfx_fonts_t gfx_font_bitmap_robo_cond_l;
 
 
 #endif /* GFX_FONTS_PUES_H */
