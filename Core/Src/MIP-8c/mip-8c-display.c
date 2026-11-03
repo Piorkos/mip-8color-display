@@ -184,14 +184,14 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
     }
 }
 
-void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text)
+void MIP_8c_Display_DrawText(uint16_t column, uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text)
 {
-    if (text == NULL || row >= SCREEN_HEIGHT_IN_PIXELS)
+    if (text == NULL || row >= SCREEN_HEIGHT_IN_PIXELS || column >= SCREEN_WIDTH_IN_PIXELS)
     {
         return;
     }
 
-    uint32_t x_position = 0;
+    uint32_t x_position = column;
     uint32_t repeated_color = (uint32_t)(color & 0x07u) * 0x249249u;
     bool previous_was_letter = false;
 

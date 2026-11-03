@@ -103,11 +103,12 @@ void MIP_8c_Display_DrawShape(uint16_t x, uint16_t y, uint8_t color, const gfx_i
 
 /**
  * @brief Draws a line of text.
+    * @param column The column (in PIXELS) where the text will be drawn.
     * @param row The row (in PIXELS) where the text will be drawn.
     * @param color The color to use for the text.
     * @param text The null-terminated string of text to draw.
  */
-void MIP_8c_Display_DrawText(uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text);
+void MIP_8c_Display_DrawText(uint16_t column, uint16_t row, uint8_t color, gfx_fonts_t *font, const char *text);
 
 /**
     * @brief Refreshes the screen by sending the updated screen buffer to the display.

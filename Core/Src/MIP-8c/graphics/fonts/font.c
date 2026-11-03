@@ -3,7 +3,7 @@
  *      Author: Dominik Piórkowski
  */
 
-#include "graphics/gfx_font.h";
+#include "graphics/gfx_font.h"
 
 
 #define INDEX_OF_FIRST_CHAR 33      // ASCII code of the first character in the font array, i.e. if first is '!' then INDEX_OF_FIRST_CHAR = 33 
