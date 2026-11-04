@@ -28,6 +28,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 project(${CMAKE_PROJECT_NAME})
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
+# Define external driver directory
+set(MIP8C_DRIVER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Driver)
+
 # Enable CMake support for ASM and C languages
 enable_language(C ASM)
 
@@ -44,21 +47,18 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ../Driver/Src/MIP-8c/mip-8c-display.c
-    ../Driver/Src/MIP-8c/graphics/gfx_icons.c
-    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
-    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
-    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
-    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
+    ${MIP8C_DRIVER_DIR}/Src/MIP-8c/mip-8c-display.c
+    ${MIP8C_DRIVER_DIR}/Src/MIP-8c/graphics/gfx_icons.c
+    ${MIP8C_DRIVER_DIR}/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
+    ${MIP8C_DRIVER_DIR}/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
+    ${MIP8C_DRIVER_DIR}/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Inc/MIP-8c
-    ../Driver/Inc
-    ../Driver/Inc/MIP-8c
+    ${MIP8C_DRIVER_DIR}/Inc
+    ${MIP8C_DRIVER_DIR}/Inc/MIP-8c
 )
 
 # Add project symbols (macros)

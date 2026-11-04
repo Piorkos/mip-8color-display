@@ -138,7 +138,7 @@ int main(void)
   uint8_t color = JDI_8COL_CYAN;
   uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
 
-  color = JDI_8COL_BLUE;
+  color = JDI_8COL_YELLOW;
   MIP_8c_Display_DrawText(10, 5, color, &gfx_font_bitmap_robo_cond_l, "09:50");
   MIP_8c_Display_DrawText(1, 80, color, &gfx_font_bitmap_robo_cond_m, "MIP 8c");
   MIP_8c_Display_DrawText(1, 125, color, &gfx_font_bitmap_robo_cond_s, "driver for STM32!");
