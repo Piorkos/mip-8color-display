@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "graphics/gfx_font.h"
 #include "spi.h"
 #include "stm32wbxx_hal_tim.h"
 #include "tim.h"
@@ -28,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "MIP-8c/mip-8c-display.h"
 #include "MIP-8c/graphics/gfx_icons.h"
+#include "MIP-8c/graphics/gfx_font.h"
 #include "stm32wbxx_hal.h"
 #include <stdint.h>
 /* USER CODE END Includes */
@@ -138,10 +138,10 @@ int main(void)
   uint8_t color = JDI_8COL_CYAN;
   uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
 
-  color = JDI_8COL_BLACK;
-  MIP_8c_Display_DrawText(1, 5, color, &gfx_font_bitmap_robo_cond_l, "|dA1.9876");
-  MIP_8c_Display_DrawText(1, 80, color, &gfx_font_bitmap_robo_cond_m, "|dA1.9876");
-  MIP_8c_Display_DrawText(1, 125, color, &gfx_font_bitmap_robo_cond_s, "|dA1.9876");
+  color = JDI_8COL_BLUE;
+  MIP_8c_Display_DrawText(10, 5, color, &gfx_font_bitmap_robo_cond_l, "09:50");
+  MIP_8c_Display_DrawText(1, 80, color, &gfx_font_bitmap_robo_cond_m, "MIP 8c");
+  MIP_8c_Display_DrawText(1, 125, color, &gfx_font_bitmap_robo_cond_s, "driver for STM32!");
   // MIP_8c_Display_DrawText(1, 40, color, &gfx_font_bitmap_robo_cond_s, "ABCDEFGH");
   // MIP_8c_Display_DrawText(1, 75, color, &gfx_font_bitmap_robo_cond_m, "abcdefgh");
   // // MIP_8c_Display_DrawText(1, 110, color, &gfx_font_bitmap_robo_cond_s, "!@#$\%^&");

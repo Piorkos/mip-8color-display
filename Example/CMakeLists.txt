@@ -44,16 +44,21 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/mip-8c-display.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/gfx_icons.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
+    ../Driver/Src/MIP-8c/mip-8c-display.c
+    ../Driver/Src/MIP-8c/graphics/gfx_icons.c
+    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
+    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
+    ../Driver/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_s.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_m.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/MIP-8c/graphics/fonts/font_bitmap_robo_cond_l.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Inc/MIP-8c
+    ../Driver/Inc
+    ../Driver/Inc/MIP-8c
 )
 
 # Add project symbols (macros)
