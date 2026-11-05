@@ -5,7 +5,9 @@ use SPI. It uses the STM32 Hardware Abstraction Layer (HAL) for SPI and GPIO
 communication and provides a framebuffer, drawing primitives, bitmap icons,
 and bitmap fonts.
 
-<img src="docs/images/mip_176x176.png" alt="Working 176 × 176 MIP display" width="620">
+<p align="center">
+  <img src="docs/images/mip_176x176.png" alt="Working 176 × 176 MIP display" width="420">
+</p>
 
 Low power consumption is one of the key advantages of MIP displays. This
 driver is designed with energy efficiency in mind: it keeps a framebuffer and
