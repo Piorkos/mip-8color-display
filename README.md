@@ -1,6 +1,6 @@
-# 3-Color MIP Display Driver for STM32
+# 8-Color MIP Display Driver for STM32
 
-A C driver for 3-color Memory-in-Pixel (MIP) displays from JDI and Sharp that
+A C driver for 8-color Memory-in-Pixel (MIP) displays from JDI and Sharp that
 use SPI. It uses the STM32 Hardware Abstraction Layer (HAL) for SPI and GPIO
 communication and provides a framebuffer, drawing primitives, bitmap icons,
 and bitmap fonts.
@@ -15,7 +15,7 @@ lets the application refresh only the rows that have changed, avoiding
 unnecessary display data transfers. Actual power consumption depends on the
 display module, its configuration, and how the application uses it.
 
-The driver is intended to support compatible 3-color SPI MIP displays across
+The driver is intended to support compatible 8-color SPI MIP displays across
 different resolutions. Its display dimensions are defined by macros in
 `Driver/Inc/MIP-8c/mip-8c-display.h`; update those macros for the target
 display. Compatibility also depends on the display using a compatible SPI
