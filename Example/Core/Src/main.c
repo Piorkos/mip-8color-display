@@ -107,6 +107,7 @@ int main(void)
   HAL_Delay(1000);
 
 
+  // Display initialization
   MIP_8c_Display_Config_t display_config = 
   {
     .hspi = &hspi1,
@@ -116,41 +117,46 @@ int main(void)
   MIP_8c_Display_Init(&display_config);
   HAL_Delay(100);
   
-
-  // Clear all screen
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLine(i, JDI_8COL_BLACK);
-  }
-  MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
-  HAL_Delay(500);
-
-  // Clear all screen
-  for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
-  {
-    MIP_8c_Display_DrawHorizontalLine(i, JDI_8COL_WHITE);
-  }
-  MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
-  HAL_Delay(500);
   
+/****************************************
+ * Example use of the MIP display driver
+ ****************************************/
 
+// Fill the screen with white
+for(int i = 0; i < SCREEN_HEIGHT_IN_PIXELS; i++)
+{
+    MIP_8c_Display_DrawHorizontalLine(i, JDI_8COL_WHITE);
+}
+MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
+HAL_Delay(500);
 
-  uint8_t color = JDI_8COL_CYAN;
-  uint32_t start = __HAL_TIM_GET_COUNTER(&htim2);
+// Draw a cyan envelope icon
+uint8_t color = JDI_8COL_CYAN;
+MIP_8c_Display_DrawShape(15, 20, color, &gfx_icon_envelope);
 
-  color = JDI_8COL_YELLOW;
-  MIP_8c_Display_DrawText(10, 5, color, &gfx_font_bitmap_robo_cond_l, "09:50");
-  MIP_8c_Display_DrawText(1, 80, color, &gfx_font_bitmap_robo_cond_m, "MIP 8c");
-  MIP_8c_Display_DrawText(1, 125, color, &gfx_font_bitmap_robo_cond_s, "driver for STM32!");
-  // MIP_8c_Display_DrawText(1, 40, color, &gfx_font_bitmap_robo_cond_s, "ABCDEFGH");
-  // MIP_8c_Display_DrawText(1, 75, color, &gfx_font_bitmap_robo_cond_m, "abcdefgh");
-  // // MIP_8c_Display_DrawText(1, 110, color, &gfx_font_bitmap_robo_cond_s, "!@#$\%^&");
-  // MIP_8c_Display_DrawText(1, 145, color, &gfx_font_bitmap_robo_cond_m, "{}[]|,.");
+// Draw text in blue
+color = JDI_8COL_BLUE;
+MIP_8c_Display_DrawText(10, 40, color, &gfx_font_bitmap_robo_cond_l, "10:25");
+MIP_8c_Display_DrawText(30, 115, color, &gfx_font_bitmap_robo_cond_s, "5 Nov 2026");
 
-  uint32_t stop = __HAL_TIM_GET_COUNTER(&htim2);
-  uint32_t delta = stop - start;
+// Draw five horizontal red lines
+color = JDI_8COL_RED;
+for(int i = 145; i < 150; i++)
+{
+    MIP_8c_Display_DrawHorizontalLine(i, color);
+}
 
-  MIP_8c_Display_RefreshScreen(0, SCREEN_HEIGHT_IN_PIXELS);
+/*
+ * Update the display.
+ * Only lines 20-150 were modified, so there is no need to refresh the entire screen.
+ * Refreshing only the modified area reduces update time and power consumption.
+ */
+MIP_8c_Display_RefreshScreen(20, 150);
+
+/****************************************
+ * End of example
+ ****************************************/
+
 
 
   /* USER CODE END 2 */
