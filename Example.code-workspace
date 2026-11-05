@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "Example"
+		},
+		{
+			"path": "Driver"
 		}
 	],
 	"settings": {
