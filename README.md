@@ -67,7 +67,6 @@ MIP_8c_Display_Config_t display_config = {
     .cs_port = SPI_CS_DISPLAY_GPIO_Port,
     .cs_pin = SPI_CS_DISPLAY_Pin
 };
-gfx_fonts_t font = gfx_font_bitmap_robo_cond_l;
 
 MIP_8c_Display_Init(&display_config);
 
